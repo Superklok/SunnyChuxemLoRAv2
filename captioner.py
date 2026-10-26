@@ -1,0 +1,61 @@
+import os
+
+# Path to your exact character dataset folder
+dataset_folder = os.path.join("dataset", "30_SunnyChuxem")
+trigger_word = "SunnyChuxem"
+
+# Master prompt data pulled directly from your generation workflow
+character_description = (
+    "A high-fidelity cinematic 3D mascot character, bold clean line art outlines. "
+    "The main body is a perfect, single, massive volumetric sphere resembling a brilliant blinding sun, "
+    "completely constructed of a highly detailed, realistic, fluidly bubbling red-orange molten rock magma texture "
+    "with an intense internal solar flare glow and bright moving liquid lava surface patterns, resembling the raw plasma "
+    "surface of the sun with no dark dried crust. There is absolutely NO human torso, NO chest, NO neck, and NO human shoulders. "
+    "Two simple, thin, realistic glowing orange magma arms attach and extend directly out from the left and right sides of the main round sun body sphere, "
+    "ending in bare orange magma hands. The arms and hands are completely vibrant orange and glowing with no silver skin, no metallic arms, "
+    "and zero gray colors on the limbs. The face features large, crisp, perfectly round hollow circle "
+    "eyes with NO pupils, a wide open crescent-shaped smiling mouth, both eyes and mouth glowing intensely with bright, pure white blinding sunlight energy "
+    "pouring out from inside the hollow sphere. Two simple, thin, realistic glowing magma legs attach and extend directly out from the absolute bottom base "
+    "of the main round sun body sphere. His feet are wrapped inside a perfectly uniform, matching pair of identical low-top athletic basketball shoe footwear "
+    "structures that are exactly the same style, shape, and design on both sides. The character's left foot wears a left-facing shoe and the character's right "
+    "foot wears a right-facing shoe, keeping them perfectly symmetrical, identical, and facing outwards to the sides of the frame. Both matching shoes are "
+    "constructed entirely out of a metallic hardened silver rock magma material texture with zero fabric components, no laces, and no casual shoe features. "
+    "Completely gloveless hands with no fabric gloves, zero gloves, no leather sneakers, no nylon shoes, no white rubber sneaker soles, no white fabric socks, "
+    "no bare human feet, no human toes, no human face features, no human chest anatomy, standing firmly with feet planted flat on the floor, crisp ambient "
+    "occlusion contact shadows beneath his shoes, signature 1980s simple rubber-hose cartoon limbs, thick bold outlined cartoon arms and cartoon legs, "
+    "simplified stylized noodle limbs, perfect flat cartoon shading on limbs matching head aesthetic, ABSOLUTELY NO human anatomy, zero photorealistic skin textures, "
+    "zero floating legs, zero snake limbs."
+)
+
+environment_description = (
+    "Marching forward through an immersive hyper-saturated psychedelic alien outer space landscape, "
+    "completely surrounded by a vibrant cosmic nebula exploding with ultra-vibrant neon magenta, electric lime green, "
+    "luminous cyan, and intense deep galactic violet interstellar gas clouds, swirling high-contrast cosmic stardust vortex, "
+    "sparkling stellar flares, walking across a highly colorful crystalline alien planet terrain shimmering with vivid rainbow iridescence, "
+    "beautiful luminous neon rim lighting completely outlining the character, high-fidelity cinematic 3D style, "
+    "crisp modern depth of field, sharp focus, matte realistic materials mixed with glowing cosmic energy, "
+    "surreal dreamlike sci-fi environment, premium vector asset illustration shading, ABSOLUTELY NO grey rooms, "
+    "zero plain walls, zero cloudy floors, pure intense color."
+)
+
+if not os.path.exists(dataset_folder):
+    print(f"Error: The directory '{dataset_folder}' does not exist. Please check your folder path.")
+else:
+    count = 0
+    # Loop over all files in the directory
+    for filename in os.listdir(dataset_folder):
+        if filename.lower().endswith('.png'):
+            # Strip the .png extension to match the base name exactly
+            base_name = filename[:-4]
+            txt_filename = f"{base_name}.txt"
+            txt_path = os.path.join(dataset_folder, txt_filename)
+            
+            # Combine everything perfectly: Trigger Word first, then Character details, then Background details
+            full_caption = f"{trigger_word}, {character_description} {environment_description}"
+            
+            # Write a fresh text file with the complete dataset template
+            with open(txt_path, 'w', encoding='utf-8') as f:
+                f.write(full_caption)
+            count += 1
+            
+    print(f"Success! Generated {count} text sidecar files with high-density master prompts for '{trigger_word}'.")
